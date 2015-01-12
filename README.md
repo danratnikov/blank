@@ -9,3 +9,8 @@
 5. `gulp`
 
 Enjoy development!
+
+
+##To build project:
+
+> `gulp build`
