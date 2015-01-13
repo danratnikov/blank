@@ -3,6 +3,7 @@
 var gulp = require('gulp'),
 	jade = require('gulp-jade'),
 	stylus = require('gulp-stylus'),
+	minifyCSS = require('gulp-minify-css'),
 	del = require('del'),
 	notify = require('gulp-notify'),
 	connect = require('gulp-connect'),
@@ -47,8 +48,9 @@ gulp.task('watch', function(){
 gulp.task('build', function(){
 	del('build/**/*.*');
 	
-	gulp.src(['app/css/', 'app/js/', 'app/img/'])
-		.pipe(gulp.dest('build'));
+	gulp.src('app/css/**/*.*')
+		.pipe(minifyCSS())
+		.pipe(gulp.dest('build/css'));
 	gulp.src('app/*.html')
 		.pipe(rename({extname: ".php"}))
 		.pipe(gulp.dest('build'));
