@@ -2,6 +2,7 @@
 
 var gulp = require('gulp'),
 	jade = require('gulp-jade'),
+	stylus = require('gulp-stylus'),
 	del = require('del'),
 	notify = require('gulp-notify'),
 	connect = require('gulp-connect'),
@@ -28,8 +29,19 @@ gulp.task('jade', function(){
 			.pipe(connect.reload());
 });
 
+gulp.task('stylus', function(){
+	return gulp.src('app/stylus/**/[^_]*.styl')
+			.pipe(changed('app/css'))
+			.pipe(stylus())
+			.pipe(rename({dirname: ""}))
+			.pipe(gulp.dest('app/css'))
+			.pipe(notify("<%= file.relative %> STYLUSED!"))
+			.pipe(connect.reload());
+});
+
 gulp.task('watch', function(){
 	gulp.watch('app/jade/**/*.jade', ['jade']);
+	gulp.watch('app/stylus/**/*.styl', ['stylus']);
 });
 
 gulp.task('build', function(){
@@ -42,4 +54,4 @@ gulp.task('build', function(){
 		.pipe(gulp.dest('build'));
 });
 
-gulp.task('default', ['jade', 'watch', 'connect']);
+gulp.task('default', ['stylus', 'jade', 'watch', 'connect']);
