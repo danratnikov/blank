@@ -6,6 +6,7 @@ var gulp = require('gulp'),
 	notify = require('gulp-notify'),
 	connect = require('gulp-connect'),
 	rename = require('gulp-rename'),
+	changed = require('gulp-changed'),
 	opn = require('opn');
 
 gulp.task('connect', function(){
@@ -19,6 +20,7 @@ gulp.task('connect', function(){
 
 gulp.task('jade', function(){
 	return gulp.src('app/jade/**/[^_]*.jade')
+			.pipe(changed('app'))
 			.pipe(jade({pretty: true}))
 			.pipe(rename({dirname: ""}))
 			.pipe(gulp.dest('app'))
