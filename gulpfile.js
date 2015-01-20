@@ -20,10 +20,12 @@ gulp.task('connect', function(){
 	opn('http://localhost:8000');
 });
 
+var jade = require('gulp-jade');
+
 gulp.task('jade', function(){
-	return gulp.src('app/jade/**/[^_]*.jade')
-			.pipe(changed('app'))
+	return gulp.src('_dev/pages/**/[^_]*.jade')
 			.pipe(jade({pretty: true}))
+			.on('error', cosole.log)
 			.pipe(rename({dirname: ""}))
 			.pipe(gulp.dest('app'))
 			.pipe(notify("<%= file.relative %> JADED!"))

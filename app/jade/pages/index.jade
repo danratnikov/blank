@@ -2,4 +2,32 @@ doctype html
 html(lang="ru")
 	include ../common/_head.jade
 	body
-
+		.container
+			.result
+				img#bg__img(src="http://lorempixel.com/600/400/people/9")
+				.drag
+					img#drag__img(src="http://lorempixel.com/100/100/nature/")
+			.controls
+				h3 Controls
+				label.controls__label#opacity-field Opacity
+					input(type='range')#opacity
+				p#opacity-val
+			.coord-table
+				h3 Coordinates
+				table
+					tr 
+						td.table__name X
+						td.table__val#xVal
+					tr
+						td.table__name Y
+						td.table__val#yVal
+			.image-table
+				h3 Images URL's
+				table
+					tr
+						td.table__name Background
+						td.table__val#backgroundURL
+					tr
+						td.table__name Watermark
+						td.table__val#watermarkURL
+		script(src="js/main.js")
