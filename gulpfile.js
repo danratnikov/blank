@@ -5,16 +5,19 @@ var gulp = require('gulp'),
 	stylus = require('gulp-stylus'),
 	minifyCSS = require('gulp-minify-css'),
 	del = require('del'),
-	notify = require('gulp-notify'),
 	connect = require('gulp-connect'),
 	rename = require('gulp-rename'),
 	changed = require('gulp-changed'),
 	opn = require('opn'),
+	nib = require('nib'),
 	clean = require('gulp-clean');
 
 gulp.task('clean', function () {
-    gulp.src('build', {read: false})
+    gulp.src('build/**/*', {read: false})
         .pipe(clean());
+     setTimeout(function(){
+		console.log('********** Clean complete! *************');
+	}, 1000);
 });
 
 gulp.task('connect', function() {
@@ -36,23 +39,22 @@ gulp.task('jade', function() {
 		.on('error', console.log)
 		.pipe(rename({dirname: ''}))
 		.pipe(gulp.dest('build'))
-		.pipe(notify("<%= file.relative %> JADED!"))
 		.pipe(connect.reload());
 });
 
 gulp.task('stylus', function() {
 	gulp.src('app/stylus/**/[^_]*.styl')
-		.pipe(stylus())
+		.pipe(stylus({
+			use: nib()
+		}))
 		.on('error', console.log)
 		.pipe(gulp.dest('build/css'))
-		.pipe(notify("<%= file.relative %> STYLUSED!"))
 		.pipe(connect.reload());
 });
 
 gulp.task('js', function() {
 	gulp.src('app/js/**/*.js')
 		.pipe(gulp.dest('build/js'))
-		.pipe(notify("<%= file.relative %> JS complete!"))
 		.pipe(connect.reload());
 });
 
@@ -66,12 +68,15 @@ gulp.task('watch', function() {
 	gulp.watch('app/jade/**/*.jade', ['jade']);
 	gulp.watch('app/stylus/**/*.styl', ['stylus']);
 	gulp.watch('app/js/**/*.js', ['js']);
+	setTimeout(function(){
+		console.log('********** Watch start! ***************');
+	}, 1000);
 });
 
 gulp.task('build', ['js', 'jade', 'stylus', 'font'], function() {
 	setTimeout(function(){
 		console.log('********** Build complete! *************');
-	}, 2000);
+	}, 1000);
 });
 
 gulp.task('default', ['stylus', 'jade', 'watch', 'connect']);
