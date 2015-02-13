@@ -69,8 +69,9 @@ gulp.task('watch', function() {
 });
 
 gulp.task('build', ['js', 'jade', 'stylus', 'font'], function() {
-
-	console.log('********** Build complete! *************');
+	setTimeout(function(){
+		console.log('********** Build complete! *************');
+	}, 2000);
 });
 
 gulp.task('default', ['stylus', 'jade', 'watch', 'connect']);
