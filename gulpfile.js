@@ -9,11 +9,17 @@ var gulp = require('gulp'),
 	connect = require('gulp-connect'),
 	rename = require('gulp-rename'),
 	changed = require('gulp-changed'),
-	opn = require('opn');
+	opn = require('opn'),
+	clean = require('gulp-clean');
 
-gulp.task('connect', function(){
+gulp.task('clean', function () {
+    gulp.src('build', {read: false})
+        .pipe(clean());
+});
+
+gulp.task('connect', function() {
 	connect.server({
-		root: 'app/',
+		root: 'build',
 		port: 8000,
 		livereload: true
 	});
@@ -22,39 +28,41 @@ gulp.task('connect', function(){
 
 var jade = require('gulp-jade');
 
-gulp.task('jade', function(){
-	return gulp.src('_dev/pages/**/[^_]*.jade')
-			.pipe(jade({pretty: true}))
-			.on('error', cosole.log)
-			.pipe(rename({dirname: ""}))
-			.pipe(gulp.dest('app'))
-			.pipe(notify("<%= file.relative %> JADED!"))
-			.pipe(connect.reload());
+gulp.task('jade', function() {
+	gulp.src('app/jade/**/[^_]*.jade')
+		.pipe(jade({
+			pretty: true
+		}))
+		.on('error', console.log)
+		.pipe(rename({dirname: ''}))
+		.pipe(gulp.dest('build'))
+		.pipe(notify("<%= file.relative %> JADED!"))
+		.pipe(connect.reload());
 });
 
-gulp.task('stylus', function(){
-	return gulp.src('app/stylus/**/[^_]*.styl')
-			.pipe(changed('app/css'))
-			.pipe(stylus())
-			.pipe(rename({dirname: ""}))
-			.pipe(gulp.dest('app/css'))
-			.pipe(notify("<%= file.relative %> STYLUSED!"))
-			.pipe(connect.reload());
+gulp.task('stylus', function() {
+	gulp.src('app/stylus/**/[^_]*.styl')
+		.pipe(stylus())
+		.on('error', console.log)
+		.pipe(gulp.dest('build/css'))
+		.pipe(notify("<%= file.relative %> STYLUSED!"))
+		.pipe(connect.reload());
 });
 
-gulp.task('watch', function(){
+gulp.task('watch', function() {
 	gulp.watch('app/jade/**/*.jade', ['jade']);
 	gulp.watch('app/stylus/**/*.styl', ['stylus']);
 });
 
-gulp.task('build', function(){
-	del('build/**/*.*');
-	
+gulp.task('build', ['jade', 'stylus'], function() {
+
 	gulp.src('app/css/**/*.*')
 		.pipe(minifyCSS())
 		.pipe(gulp.dest('build/css'));
 	gulp.src('app/*.html')
-		.pipe(rename({extname: ".php"}))
+		.pipe(rename({
+			extname: ".php"
+		}))
 		.pipe(gulp.dest('build'));
 });
 

@@ -1,4 +1,2 @@
 build
 node_modules
-app/**/*.html
-app/**/*.css
