@@ -49,12 +49,20 @@ gulp.task('stylus', function() {
 		.pipe(connect.reload());
 });
 
+gulp.task('js', function() {
+	gulp.src('app/js/**/*.js')
+		.pipe(gulp.dest('build/js'))
+		.pipe(notify("<%= file.relative %> JS complete!"))
+		.pipe(connect.reload());
+});
+
 gulp.task('watch', function() {
 	gulp.watch('app/jade/**/*.jade', ['jade']);
 	gulp.watch('app/stylus/**/*.styl', ['stylus']);
+	gulp.watch('app/js/**/*.js', ['js']);
 });
 
-gulp.task('build', ['jade', 'stylus'], function() {
+gulp.task('build', ['js', 'jade', 'stylus'], function() {
 
 	gulp.src('app/css/**/*.*')
 		.pipe(minifyCSS())
