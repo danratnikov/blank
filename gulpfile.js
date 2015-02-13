@@ -56,22 +56,21 @@ gulp.task('js', function() {
 		.pipe(connect.reload());
 });
 
+gulp.task('font', function() {
+	gulp.src('app/font/**/*')
+		.pipe(gulp.dest('build/font'))
+		.pipe(connect.reload());
+});
+
 gulp.task('watch', function() {
 	gulp.watch('app/jade/**/*.jade', ['jade']);
 	gulp.watch('app/stylus/**/*.styl', ['stylus']);
 	gulp.watch('app/js/**/*.js', ['js']);
 });
 
-gulp.task('build', ['js', 'jade', 'stylus'], function() {
+gulp.task('build', ['js', 'jade', 'stylus', 'font'], function() {
 
-	gulp.src('app/css/**/*.*')
-		.pipe(minifyCSS())
-		.pipe(gulp.dest('build/css'));
-	gulp.src('app/*.html')
-		.pipe(rename({
-			extname: ".php"
-		}))
-		.pipe(gulp.dest('build'));
+	console.log('********** Build complete! *************');
 });
 
 gulp.task('default', ['stylus', 'jade', 'watch', 'connect']);
