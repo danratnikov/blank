@@ -10,6 +10,7 @@ var gulp = require('gulp'),
 	changed = require('gulp-changed'),
 	opn = require('opn'),
 	nib = require('nib'),
+	imageMin = require('gulp-imagemin'),
 	clean = require('gulp-clean');
 
 gulp.task('clean', function () {
@@ -30,6 +31,14 @@ gulp.task('connect', function() {
 });
 
 var jade = require('gulp-jade');
+
+
+gulp.task('image', function() {
+	gulp.src('app/img/**/*')
+		.pipe(imageMin())
+		.pipe(gulp.dest('build/img'))
+		.pipe(connect.reload());
+});
 
 gulp.task('jade', function() {
 	gulp.src('app/jade/**/[^_]*.jade')
@@ -68,12 +77,13 @@ gulp.task('watch', function() {
 	gulp.watch('app/jade/**/*.jade', ['jade']);
 	gulp.watch('app/stylus/**/*.styl', ['stylus']);
 	gulp.watch('app/js/**/*.js', ['js']);
+	gulp.watch('app/img/**/*', ['image']);
 	setTimeout(function(){
 		console.log('********** Watch start! ***************');
 	}, 1000);
 });
 
-gulp.task('build', ['js', 'jade', 'stylus', 'font'], function() {
+gulp.task('build', ['js', 'jade', 'stylus', 'font', 'image'], function() {
 	setTimeout(function(){
 		console.log('********** Build complete! *************');
 	}, 1000);
