@@ -40,6 +40,12 @@ gulp.task('image', function() {
 		.pipe(connect.reload());
 });
 
+gulp.task('favicon', function() {
+	gulp.src('app/favicon/**/*')
+		.pipe(gulp.dest('build'))
+		.pipe(connect.reload());
+});
+
 gulp.task('jade', function() {
 	gulp.src('app/jade/**/[^_]*.jade')
 		.pipe(jade({
@@ -78,12 +84,13 @@ gulp.task('watch', function() {
 	gulp.watch('app/stylus/**/*.styl', ['stylus']);
 	gulp.watch('app/js/**/*.js', ['js']);
 	gulp.watch('app/img/**/*', ['image']);
+	gulp.watch('app/favicon/**/*', ['favicon']);
 	setTimeout(function(){
 		console.log('********** Watch start! ***************');
 	}, 1000);
 });
 
-gulp.task('build', ['js', 'jade', 'stylus', 'font', 'image'], function() {
+gulp.task('build', ['js', 'jade', 'stylus', 'font', 'image', 'favicon'], function() {
 	setTimeout(function(){
 		console.log('********** Build complete! *************');
 	}, 1000);
